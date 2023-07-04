@@ -23,7 +23,17 @@ const login = (req,res) => {
     
 }
 
+const getUsers = (req,res) => {
+    const userId = req.params.id
+
+    pool.query('SELECT * FROM users', (error, results) => {
+        if(error) return res.status(500).json(error)
+        return res.status(200).json(results.rows)
+    })
+}
+
 module.exports = {
     register, 
-    login
+    login,
+    getUsers
 }
