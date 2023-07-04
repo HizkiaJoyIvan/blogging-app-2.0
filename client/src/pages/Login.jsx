@@ -1,22 +1,27 @@
 import React, {useRef, useState} from 'react'
+import axios from 'axios'
+import { useNavigate } from 'react-router'
 
 const Login = () => {
   
   const emailRef = useRef()
   const pwdRef = useRef()
   const pwdAgainRef = useRef()
+  const navigate = useNavigate()
   
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault()
     if(pwdRef.current.value !== pwdAgainRef.current.value){
       pwdAgainRef.current.setCustomValidity("Password don't match")
     }else {
         const user = {
             email: emailRef.current.value,
-            password: pwdRef.current.value
+            pwd: pwdRef.current.value
         }
         try {
-
+          console.log(user)
+          await axios.post('http://localhost:3200/api/auth/login', user)
+          navigate('/')
         } catch(err) {
             console.log(err)
         }
@@ -60,11 +65,12 @@ const Login = () => {
               >
                 Sign In
               </button>
-              <button
+              <a
+                href='/register'
                 className="bg-white hover:bg-blue-100 text-blue-500 font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transition duration-300 ease-in-out"
               >
                 Don't have an account
-              </button>
+              </a>
             </div>
           </form>
         </div>

@@ -2,7 +2,7 @@ import React from 'react'
 
 const CreatePost = () => {
   return (
-    <div>
+    <div className='bg-gray-50 h-screen w-screen'>
       
     </div>
   )

@@ -34,7 +34,7 @@ function App() {
           element: <Post />
         },
         {
-          path: "/create",
+          path: "/createPost",
           element: <CreatePost />
         }
       ]

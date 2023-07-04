@@ -1,4 +1,6 @@
+import axios from 'axios'
 import React, {useRef, useState} from 'react'
+import { useNavigate } from 'react-router'
 
 const Register = () => {
   
@@ -6,8 +8,9 @@ const Register = () => {
   const emailRef = useRef()
   const pwdRef = useRef()
   const pwdAgainRef = useRef()
+  const navigate = useNavigate()
   
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault()
     if(pwdRef.current.value !== pwdAgainRef.current.value){
       pwdAgainRef.current.setCustomValidity("Password don't match")
@@ -15,10 +18,12 @@ const Register = () => {
         const user = {
             username: usernameRef.current.value,
             email: emailRef.current.value,
-            password: pwdRef.current.value
+            img: 'photo.jpg',
+            pwd: pwdRef.current.value
         }
         try {
-
+          await axios('http://localhost:3200/api/auth/register', user)
+          navigate('/login')
         } catch(err) {
             console.log(err)
         }

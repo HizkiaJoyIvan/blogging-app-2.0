@@ -29,9 +29,9 @@ const Navbar = () => {
             ))}
         </div>
         <div className='flex gap-4 items-center'>
-            <p>Register</p>
-            <p>Sign In</p>
-            <p className='bg-purple-400 text-white p-3 rounded-md'>Create</p>
+            <a href="/register">Register</a>
+            <a href="/login">Sign In</a>
+            <a href="/createPost" className='bg-purple-400 text-white p-3 rounded-md'>Create</a>
         </div>
       </div>
     </div>
