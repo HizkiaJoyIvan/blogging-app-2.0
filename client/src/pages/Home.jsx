@@ -1,12 +1,15 @@
-import React, { useEffect } from 'react'
+import React, { useContext, useEffect } from 'react'
 import {Link, useLocation} from 'react-router-dom'
+import { AuthContext } from '../context/AuthContext'
 
 const Home = () => {
 
   const cat = useLocation().search
 
+  const {currentUser} = useContext(AuthContext)
+
   useEffect(()=> {
-    console.log(cat)
+    console.log(currentUser)
   }, [cat])
 
   const dummyData = 

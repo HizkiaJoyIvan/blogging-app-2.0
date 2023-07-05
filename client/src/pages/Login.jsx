@@ -1,6 +1,7 @@
-import React, {useRef, useState} from 'react'
+import React, {useContext, useRef, useState} from 'react'
 import axios from 'axios'
 import { useNavigate } from 'react-router'
+import { AuthContext } from '../context/AuthContext'
 
 const Login = () => {
   
@@ -8,6 +9,8 @@ const Login = () => {
   const pwdRef = useRef()
   const pwdAgainRef = useRef()
   const navigate = useNavigate()
+
+  const {login, currentUser} = useContext(AuthContext)
   
   const handleSubmit = async (e) => {
     e.preventDefault()
@@ -19,8 +22,7 @@ const Login = () => {
             pwd: pwdRef.current.value
         }
         try {
-          console.log(user)
-          await axios.post('http://localhost:3200/api/auth/login', user)
+          await login(user)
           navigate('/')
         } catch(err) {
             console.log(err)
