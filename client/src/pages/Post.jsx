@@ -1,5 +1,9 @@
-import React, { useEffect, useState } from "react";
+import axios from "axios";
+import React, { useContext, useEffect, useState } from "react";
 import { useLocation } from "react-router";
+import moment from "moment";
+import { AuthContext } from "../context/AuthContext";
+import { Link } from "react-router-dom";
 
 const Post = () => {
   const location = useLocation();
@@ -7,35 +11,20 @@ const Post = () => {
 
   const [post, setPost] = useState();
 
-  const dummyData = [
-    {
-      id: "1",
-      title: "Rise of Artificial Intelligence",
-      desc: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
-      img: "https://imageio.forbes.com/specials-images/imageserve/64213c10fc7ed6f0a3eb47ae/The-Intersection-Of-AI-And-Human-Creativity--Can-Machines-Really-Be-Creative-/960x0.jpg?format=jpg&width=960",
-      postDate: "26-05-2023",
-      cat: "tech",
-    },
-    {
-      id: "2",
-      title: "Introduction to Web Development",
-      desc: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
-      img: "https://rubygarage.s3.amazonaws.com/uploads/article_image/file/709/technology-stack-diagram.jpg",
-      postDate: "26-04-2023",
-      cat: "tech",
-    },
-    {
-      id: "3",
-      title: "Introduction to Web Development",
-      desc: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
-      img: "https://rubygarage.s3.amazonaws.com/uploads/article_image/file/709/technology-stack-diagram.jpg",
-      postDate: "26-04-2023",
-      cat: "tech",
-    },
-  ];
+  const {currentUser} = useContext(AuthContext);
 
   useEffect(() => {
-    setPost(dummyData[postId - 1]);
+    const fetchData = async () => {
+      try {
+        console.log(postId)
+        const res = await axios.get(`http://localhost:3200/api/post/${postId}`)
+        console.log(res.data)
+        setPost(res.data)
+      } catch(err) {
+        console.log(err)
+      }
+    }
+    fetchData()
   }, [postId]);
 
   return (
@@ -48,9 +37,14 @@ const Post = () => {
         />
         <div className="p-6">
           <h2 className="text-xl font-semibold mb-2">{post?.title}</h2>
-          <p className="text-gray-700 mb-4">{post?.desc}</p>
+          <p className="text-gray-700 mb-4">{post?.descriptions}</p>
           <div className="flex justify-between items-center">
-            <span className="text-gray-500 text-xs">{post?.postDate}</span>
+            <span className="text-gray-500 text-xs">{moment(post?.postDate).fromNow()}</span>
+            {currentUser?.user_id === post?.user_id && (
+              <Link className="bg-purple-800 text-white p-3 rounded-md" to={`/editPost/${post?.post_id}`}>
+                Edit
+              </Link>
+            )}
           </div>
         </div>
       </div>

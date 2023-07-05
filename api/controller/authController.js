@@ -46,7 +46,7 @@ const login = (req, res) => {
       const token = jwt.sign({id: data.user_id}, "jwtkey");
 
       res.cookie("access_token", token, {
-        httpOnly:false,
+        httpOnly:true,
         secure: false
       })
 

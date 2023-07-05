@@ -1,17 +1,20 @@
 import axios from "axios";
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import moment from "moment";
 import { AuthContext } from "../context/AuthContext";
-import { useNavigate } from "react-router";
+import { useLocation, useNavigate } from "react-router";
 
-const CreatePost = () => {
+const EditPost = () => {
   const [title, setTitle] = useState();
   const [desc, setDesc] = useState();
   const [file, setFile] = useState(null);
   const [cat, setCat] = useState();
 
   const {currentUser} = useContext(AuthContext);
-  const navigate = useNavigate()
+  const navigate = useNavigate();
+  const location = useLocation();
+  
+  const postId = location.pathname.split('/')[2]
 
   const upload = async () => {
     try {
@@ -38,8 +41,8 @@ const CreatePost = () => {
         cat
       }
       console.log(post)
-      await axios.post("http://localhost:3200/api/post", post)
-      navigate('/')
+      await axios.put(`http://localhost:3200/api/post/${postId}`, post)
+      navigate(`/post/${postId}`)
     } catch(err) {
       console.log(err)
     }
@@ -200,4 +203,4 @@ const CreatePost = () => {
   );
 };
 
-export default CreatePost;
+export default EditPost;

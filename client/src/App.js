@@ -7,6 +7,7 @@ import Footer from './component/Footer'
 import Home from './pages/Home'
 import Post from './pages/Post'
 import CreatePost from './pages/CreatePost'
+import EditPost from './pages/EditPost'
 
 function App() {
 
@@ -36,6 +37,10 @@ function App() {
         {
           path: "/createPost",
           element: <CreatePost />
+        },
+        {
+          path: "/editPost/:id",
+          element: <EditPost />
         }
       ]
     },
