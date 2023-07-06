@@ -14,7 +14,7 @@ const Home = () => {
     const fetchData = async () => {
       try {
         console.log(cat)
-        const res = await axios.get(`http://localhost:3200/api/post?cat=${cat}`);
+        const res = cat ? await axios.get(`http://localhost:3200/api/post?cat=${cat}`) : await axios.get("http://localhost:3200/api/post");
         setPosts(res.data);
       } catch (err) {
         console.log(err);

@@ -10,7 +10,7 @@ const Navbar = () => {
     "science",
     "politic",
     "work",
-    "entertaiment",
+    "entertainment",
   ];
   const [category, setCategory] = useState();
 
