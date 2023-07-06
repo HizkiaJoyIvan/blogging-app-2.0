@@ -21,7 +21,7 @@ const Register = () => {
         pwd: pwdRef.current.value,
       };
       try {
-        await axios("http://localhost:3200/api/auth/register", user);
+        await axios("https://blogging-app-2-0-api.vercel.app/api/auth/register", user);
         navigate("/login");
       } catch (err) {
         console.log(err);

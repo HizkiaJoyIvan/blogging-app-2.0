@@ -17,7 +17,7 @@ const Post = () => {
     const fetchData = async () => {
       try {
         console.log(postId)
-        const res = await axios.get(`http://localhost:3200/api/post/${postId}`)
+        const res = await axios.get(`https://blogging-app-2-0-api.vercel.app/api/post/${postId}`)
         console.log(res.data)
         setPost(res.data)
       } catch(err) {
