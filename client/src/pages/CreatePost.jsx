@@ -17,7 +17,7 @@ const CreatePost = () => {
     try {
       const formData = new FormData()
       formData.append("file", file)
-      const res = await axios.post("https://blogging-app-2-0-api.vercel.app/api/upload", formData)
+      const res = await axios.post("https://blogging-app-2-0-nj2a4vjr2-mrinsectt.vercel.app/api/upload", formData)
       return res.data
     } catch(err) {
       console.log(err)
