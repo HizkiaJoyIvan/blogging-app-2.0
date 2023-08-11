@@ -13,11 +13,11 @@ function App() {
 
   const Layout = () => {
     return (
-      <>
+      <div className="flex flex-col">
         <Navbar />
-        <Outlet />
+        <Outlet/>
         <Footer />
-      </>
+    </div>
     )
   }
 

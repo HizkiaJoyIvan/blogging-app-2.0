@@ -2,20 +2,36 @@ const pool = require("../models/db");
 const jwt = require("jsonwebtoken");
 
 const getAllPosts = (req, res) => {
-  const q = req.query.cat
-    ? "SELECT * FROM post WHERE cat = $1"
-    : "SELECT * FROM post";
-  if(!req.query.cat) {
-    pool.query(q, (error, results) => {
-      if (error) return res.status(500).send(error);
-      return res.status(200).json(results.rows);
+
+  const category = req.query.cat;
+  const page = req.query.page;
+  const limit = req.query.limit;
+  const offset = (page-1)*limit;
+
+  const q = category
+    ? "SELECT * FROM post WHERE cat = $1 LIMIT $2 OFFSET $3"
+    : "SELECT * FROM post LIMIT $1 OFFSET $2";
+
+  const values = category ? [category, limit, offset] : [limit, offset];
+
+  pool.query(q, values, (error, results) => {
+    if(error) return res.status(500).send(error);
+
+    pool.query("SELECT COUNT(*) FROM post", (countError, countResults) => {
+      if(countError) return res.status(500).send(error);
+        
+        const totalCount = parseInt(countResults.rows[0].count);
+        const totalPages = Math.ceil(totalCount/limit);
+
+        const response = {
+          pages: totalPages,
+          currentPage: page,
+          results: results.rows
+        };
+
+        return res.status(200).json(response);
     });
-  } else {
-    pool.query(q, [req.query.cat], (error, results) => {
-      if (error) return res.status(500).send(error);
-      return res.status(200).json(results.rows);
-    });
-  }
+  });
 };
 
 const getPost = (req, res) => {
@@ -32,11 +48,6 @@ const getPost = (req, res) => {
 };
 
 const createPost = (req, res) => {
-  // const token = req.cookies.access_token
-  // if(!token) return res.status(401).send("Not authorized")
-
-  // jwt.verify(token, "jwtkey", (error, userInfo) => {
-  //   if(error) return res.status(403).send("Token not valid")
     const { title, descriptions, img, postDate, userId, cat } = req.body;
 
     pool.query(

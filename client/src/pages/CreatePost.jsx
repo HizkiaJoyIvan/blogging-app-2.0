@@ -17,7 +17,7 @@ const CreatePost = () => {
     try {
       const formData = new FormData()
       formData.append("file", file)
-      const res = await axios.post(`${process.env.REACT_API_URI}/upload`, formData)
+      const res = await axios.post(`${process.env.REACT_APP_URI}/upload`, formData)
       return res.data
     } catch(err) {
       console.log(err)
@@ -38,7 +38,7 @@ const CreatePost = () => {
         cat
       }
       console.log(post)
-      await axios.post(`${process.env.REACT_API_URI}/post`, post)
+      await axios.post(`${process.env.REACT_APP_URI}/post`, post)
       navigate('/')
     } catch(err) {
       console.log(err)

@@ -13,11 +13,13 @@ const Post = () => {
 
   const {currentUser} = useContext(AuthContext);
 
+  const PF = process.env.REACT_APP_URI + "/images/"
+
   useEffect(() => {
     const fetchData = async () => {
       try {
         console.log(postId)
-        const res = await axios.get(`${process.env.REACT_API_URI}/post/${postId}`)
+        const res = await axios.get(`${process.env.REACT_APP_URI}/post/${postId}`)
         console.log(res.data)
         setPost(res.data)
       } catch(err) {
@@ -32,7 +34,7 @@ const Post = () => {
       <div className="bg-white shadow-lg rounded-lg overflow-hidden max-w-2xl">
         <img
           className="w-full h-48 object-cover"
-          src={post?.img}
+          src={PF+post?.img}
           alt="Post Image"
         />
         <div className="p-6">
