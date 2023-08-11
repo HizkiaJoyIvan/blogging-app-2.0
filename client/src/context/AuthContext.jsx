@@ -7,12 +7,12 @@ export const AuthContextProvider = ({children}) => {
     const [currentUser, setCurrentUser] = useState(JSON.parse(localStorage.getItem("user")) || null)
     
     const login = async (input) => {
-        const res = await axios.post("https://blogging-app-2-0-nj2a4vjr2-mrinsectt.vercel.app/api/auth/login", input)
+        const res = await axios.post(`${process.env.REACT_APP_URI}/auth/login`, input)
         setCurrentUser(res.data)
     }
 
     const logout = async () => {
-        await axios.post("https://blogging-app-2-0-nj2a4vjr2-mrinsectt.vercel.app/api/auth/logout")
+        await axios.post(`${process.env.REACT_APP_URI}/auth/logout`)
         setCurrentUser(null)
     }
 

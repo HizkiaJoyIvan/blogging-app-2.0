@@ -17,7 +17,7 @@ const Post = () => {
     const fetchData = async () => {
       try {
         console.log(postId)
-        const res = await axios.get(`https://blogging-app-2-0-nj2a4vjr2-mrinsectt.vercel.app/api/post/${postId}`)
+        const res = await axios.get(`${process.env.REACT_API_URI}/post/${postId}`)
         console.log(res.data)
         setPost(res.data)
       } catch(err) {

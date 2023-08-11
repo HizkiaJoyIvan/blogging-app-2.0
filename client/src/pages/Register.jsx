@@ -1,6 +1,6 @@
 import axios from "axios";
 import React, { useRef, useState } from "react";
-import { useNavigate } from "react-router";
+import { Navigate, useNavigate } from "react-router";
 
 const Register = () => {
   const usernameRef = useRef();
@@ -21,7 +21,7 @@ const Register = () => {
         pwd: pwdRef.current.value,
       };
       try {
-        await axios("https://blogging-app-2-0-api.vercel.app/api/auth/register", user);
+        await axios(`${process.env.REACT_APP_URI}/auth/register`, user);
         navigate("/login");
       } catch (err) {
         console.log(err);
@@ -75,7 +75,7 @@ const Register = () => {
               >
                 Sign Up
               </button>
-              <button className="bg-white hover:bg-blue-100 text-blue-500 font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transition duration-300 ease-in-out">
+              <button className="bg-white hover:bg-blue-100 text-blue-500 font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transition duration-300 ease-in-out" onClick={navigate('/login')}>
                 Log into Account
               </button>
             </div>

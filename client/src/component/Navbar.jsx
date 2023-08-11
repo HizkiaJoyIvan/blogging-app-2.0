@@ -1,16 +1,17 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
+import {dummyCat} from "../dummyData"
 
 const Navbar = () => {
   const categories = [
-    "tech",
-    "travel",
-    "education",
-    "science",
-    "politic",
-    "work",
-    "entertainment",
+    "Tech",
+    "Travel",
+    "Education",
+    "Science",
+    "Politic",
+    "Industry",
+    "History",
   ];
   const [category, setCategory] = useState();
 
@@ -31,7 +32,7 @@ const Navbar = () => {
             href="/"
             className="text-4xl font-bold text-purple-500 tracking-wide"
           >
-            blogify
+            testing
           </a>
           <div className="flex items-center gap-1"></div>
         </div>
