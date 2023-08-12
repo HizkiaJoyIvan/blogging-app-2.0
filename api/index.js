@@ -6,6 +6,7 @@ const authRoutes = require("./routes/authRoutes");
 const postRoutes = require("./routes/postRoutes");
 const cookieParser = require("cookie-parser");
 const multer = require("multer");
+require('dotenv').config();
 const path = require("path");
 
 app.use(

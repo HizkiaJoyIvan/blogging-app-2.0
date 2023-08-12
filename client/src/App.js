@@ -1,65 +1,70 @@
-import './App.css'
-import Register from './pages/Register'
-import {BrowserRouter, Routes, Route, createBrowserRouter, RouterProvider, Outlet} from 'react-router-dom'
-import Login from './pages/Login'
-import Navbar from './component/Navbar'
-import Footer from './component/Footer'
-import Home from './pages/Home'
-import Post from './pages/Post'
-import CreatePost from './pages/CreatePost'
-import EditPost from './pages/EditPost'
+import "./App.css";
+import Register from "./pages/Register";
+import {
+  BrowserRouter,
+  Routes,
+  Route,
+  createBrowserRouter,
+  RouterProvider,
+  Outlet,
+} from "react-router-dom";
+import Login from "./pages/Login";
+import Navbar from "./component/Navbar";
+import Footer from "./component/Footer";
+import Home from "./pages/Home";
+import Post from "./pages/Post";
+import CreatePost from "./pages/CreatePost";
+import EditPost from "./pages/EditPost";
 
 function App() {
-
   const Layout = () => {
     return (
       <div className="flex flex-col">
         <Navbar />
-        <Outlet/>
+        <Outlet />
         <Footer />
-    </div>
-    )
-  }
+      </div>
+    );
+  };
 
-  const router =  createBrowserRouter([
+  const router = createBrowserRouter([
     {
       path: "/",
       element: <Layout />,
       children: [
         {
           path: "/",
-          element: <Home />
+          element: <Home />,
         },
         {
           path: "/post/:id",
-          element: <Post />
+          element: <Post />,
         },
         {
           path: "/createPost",
-          element: <CreatePost />
+          element: <CreatePost />,
         },
         {
           path: "/editPost/:id",
-          element: <EditPost />
-        }
-      ]
+          element: <EditPost />,
+        },
+      ],
     },
     {
       path: "/register",
-      element: <Register />
+      element: <Register />,
     },
     {
       path: "/login",
-      element: <Login />
-    }
-  ])
-
+      element: <Login />,
+    },
+  ]);
 
   return (
     <div>
-      <RouterProvider router={router}/>
+      <RouterProvider router={router} />
     </div>
-  )
+  );
 }
 
-export default App
+export default App;

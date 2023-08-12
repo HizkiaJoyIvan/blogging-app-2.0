@@ -6,6 +6,7 @@ const register = (req, res) => {
   const { username, email, img, pwd } = req.body;
 
   // Check if other users with similar username or email exist
+
   pool.query(
     "SELECT * FROM users WHERE username = $1 OR email = $2",
     [username, email],
@@ -22,7 +23,7 @@ const register = (req, res) => {
         [username, email, img, hashedPwd],
         (error, results) => {
           if (error) return res.status(500).json(error);
-          return res.status(200).json("User has been created");
+          return res.status(200).json({message: "User has been created", result: results.rows});
         }
       );
     }
@@ -43,23 +44,21 @@ const login = (req, res) => {
       const pwdIsCorrect = bcrypt.compareSync(pwd, data.pwd);
       if (!pwdIsCorrect) return res.status(400).json("Wrong password");
 
-      const token = jwt.sign({id: data.user_id}, "jwtkey");
+      const token = jwt.sign({ id: data.user_id }, process.env.AUTH_TOKEN);
 
-      res.cookie("access_token", token, {
-        httpOnly:true,
-        secure: false
-      })
-
-      res.status(200).json(data)
+      res.status(200).json({message: "User has been logged in", result: results.rows, token: token });
     }
   );
 };
 
 const logout = (req, res) => {
-  res.clearCookie("access_token", {
-    sameSite: "none",
-    secure: true
-  }).status(200).send("User has been logged out")
+  res
+    .clearCookie("access_token", {
+      sameSite: "none",
+      secure: true,
+    })
+    .status(200)
+    json({message: "User has been logged out"});
 };
 
 const getUsers = (req, res) => {

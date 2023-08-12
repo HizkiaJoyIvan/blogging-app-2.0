@@ -10,41 +10,44 @@ const EditPost = () => {
   const [file, setFile] = useState(null);
   const [cat, setCat] = useState();
 
-  const {currentUser} = useContext(AuthContext);
+  const { currentUser } = useContext(AuthContext);
   const navigate = useNavigate();
   const location = useLocation();
-  
-  const postId = location.pathname.split('/')[2]
+
+  const postId = location.pathname.split("/")[2];
 
   const upload = async () => {
     try {
-      const formData = new FormData()
-      formData.append("file", file)
-      const res = await axios.post(`${process.env.REACT_APP_URI}/upload`, formData)
-      return res.data
-    } catch(err) {
-      console.log(err)
+      const formData = new FormData();
+      formData.append("file", file);
+      const res = await axios.post(
+        `${process.env.REACT_APP_URI}/upload`,
+        formData
+      );
+      return res.data;
+    } catch (err) {
+      console.log(err);
     }
-  }
+  };
 
   const handleSubmit = async (e) => {
-    e.preventDefault()
-    const imgURL = await upload()
+    e.preventDefault();
+    const imgURL = await upload();
 
     try {
       const post = {
-        title: title, 
-        descriptions: desc, 
-        img: file ? imgURL : "", 
-        postDate: moment(Date.now()).format("YYYY-MM-DD HH:mm:ss"), 
+        title: title,
+        descriptions: desc,
+        img: file ? imgURL : "",
+        postDate: moment(Date.now()).format("YYYY-MM-DD HH:mm:ss"),
         userId: currentUser.user_id,
-        cat
-      }
-      console.log(post)
-      await axios.put(`${process.env.REACT_APP_URI}/post/${postId}`, post)
-      navigate(`/post/${postId}`)
-    } catch(err) {
-      console.log(err)
+        cat,
+      };
+      console.log(post);
+      await axios.put(`${process.env.REACT_APP_URI}/post/${postId}`, post);
+      navigate(`/post/${postId}`);
+    } catch (err) {
+      console.log(err);
     }
   };
 

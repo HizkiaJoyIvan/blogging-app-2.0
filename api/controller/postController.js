@@ -1,5 +1,6 @@
 const pool = require("../models/db");
 const jwt = require("jsonwebtoken");
+const verifyToken = require("../middleware/verifyToken");
 
 const getAllPosts = (req, res) => {
 
