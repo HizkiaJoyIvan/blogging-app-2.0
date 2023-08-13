@@ -9,7 +9,7 @@ const Login = () => {
   const pwdAgainRef = useRef();
   const navigate = useNavigate();
 
-  const { login, currentUser } = useContext(AuthContext);
+  const { login } = useContext(AuthContext);
 
   const handleSubmit = async (e) => {
     e.preventDefault();

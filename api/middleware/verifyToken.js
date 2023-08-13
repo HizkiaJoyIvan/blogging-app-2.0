@@ -1,18 +1,19 @@
 const jwt = require('jsonwebtoken');
 
 const verifyToken = (req, res, next) => {
-    const accessToken = req.headers["access_token"];
+    const authHeader = req.headers.authorization;
 
-    if(!accessToken){
-        res.status(404).json({message: "No token provided"});
-    } else {
-        jwt.verify(accessToken, process.env.AUTH_TOKEN, (err, decoded) => {
-            if(err) res.status(500).json({error: err});
-            else  {
-                req.userId = decoded;
+    if(authHeader){
+        const token = authHeader.split(" ")[1];
+        jwt.verify(token, process.env.AUTH_TOKEN, (err, decoded) => {
+            if(err) return res.status(403).json({message: "Token is not valid"});
+            else {
+                res.user = decoded;
                 next();
             }
         });
+    }else {
+        return res.status(401).json({message: "You are not authenticated"});
     }
 };
 

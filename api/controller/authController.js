@@ -44,21 +44,43 @@ const login = (req, res) => {
       const pwdIsCorrect = bcrypt.compareSync(pwd, data.pwd);
       if (!pwdIsCorrect) return res.status(400).json("Wrong password");
 
-      const token = jwt.sign({ id: data.user_id }, process.env.AUTH_TOKEN);
+      const accessToken = jwt.sign({ id: data.user_id }, process.env.AUTH_TOKEN, {
+        expiresIn: "10s",
+      });
+      const refreshToken = jwt.sign({id: data.user_id }, process.env.AUTH_REFRESH, {
+        expiresIn: "1h",
+      });
+      refreshTokens.push(refreshToken);
 
-      res.status(200).json({message: "User has been logged in", result: results.rows, token: token });
+      res.status(200).json({message: "User has been logged in", result: results.rows, accessToken: accessToken, refreshToken: refreshToken });
     }
   );
 };
 
+
+let refreshTokens = [];
+
+const refresh = (req, res) => {
+  const refreshToken = req.body.token;
+  
+  if(!refreshToken) return res.status(401).json({message: "You are not authenticated"});
+  if(!refreshTokens.includes(refreshToken)) return res.status(403).json({message: "Token is not valid"});
+  
+  jwt.verify(refreshToken, process.env.AUTH_REFRESH, (err, decodedUser) => {
+    err && console.log(err);
+    refreshTokens = refreshTokens.filter((token) => token !== refreshToken);
+    const newAccessToken = jwt.sign({id: decodedUser._id}, process.env.AUTH_TOKEN);
+    const newRefreshToken = jwt.sign({id: decodedUser._id}, process.env.AUTH_REFRESH);
+    refreshTokens.push(newRefreshToken);
+    
+    return res.status(200).json({refreshToken: newRefreshToken, accessToken: newAccessToken});
+  });
+};
+
 const logout = (req, res) => {
-  res
-    .clearCookie("access_token", {
-      sameSite: "none",
-      secure: true,
-    })
-    .status(200)
-    json({message: "User has been logged out"});
+  const refreshToken = req.body.token;
+  refreshTokens = refreshTokens.filter((token) => token !==refreshToken);
+  return res.status(200).json({message: "You have logged out"});
 };
 
 const getUsers = (req, res) => {
@@ -73,4 +95,5 @@ module.exports = {
   login,
   getUsers,
   logout,
+  refresh
 };

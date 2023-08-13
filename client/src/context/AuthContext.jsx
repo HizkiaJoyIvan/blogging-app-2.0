@@ -13,21 +13,37 @@ export const AuthContextProvider = ({ children }) => {
       `${process.env.REACT_APP_URI}/auth/login`,
       input
     );
-    localStorage.setItem("accessToken", res.data.token);
-    setCurrentUser(res.data.result);
+    setCurrentUser(res.data);
   };
 
   const logout = async () => {
-    await axios.post(`${process.env.REACT_APP_URI}/auth/logout`);
+    await axios.post(`${process.env.REACT_APP_URI}/auth/logout`,{
+      token: currentUser?.refreshToken
+    });
     setCurrentUser(null);
   };
+
+  const refresh = async () => {
+    try {
+      const res = await axios.post(`${process.env.REACT_APP_URI}/auth/refresh`, {
+        token: currentUser?.refreshToken,
+      });
+      setCurrentUser((prevUser) => ({
+        ...prevUser,
+        accessToken: res.data.accessToken,
+        refreshToken: res.data.refreshToken,
+      }));
+    } catch(err){
+      console.log(err)
+    }
+  }
 
   useEffect(() => {
     localStorage.setItem("user", JSON.stringify(currentUser));
   }, [currentUser]);
 
   return (
-    <AuthContext.Provider value={{ currentUser, login, logout }}>
+    <AuthContext.Provider value={{ currentUser, login, logout, refresh }}>
       {children}
     </AuthContext.Provider>
   );

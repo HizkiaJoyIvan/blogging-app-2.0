@@ -6,8 +6,9 @@ const {
   getAllPosts,
   getPost,
 } = require("../controller/postController");
+const verifyToken = require("../middleware/verifyToken");
 
-router.get("/:id", getPost);
+router.get("/:id", verifyToken, getPost);
 
 router.get("/", getAllPosts);
 

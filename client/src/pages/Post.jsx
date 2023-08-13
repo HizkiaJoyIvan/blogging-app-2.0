@@ -11,15 +11,19 @@ const Post = () => {
 
   const [post, setPost] = useState();
 
-  const {currentUser} = useContext(AuthContext);
+  const {currentUser, refresh} = useContext(AuthContext);
 
   const PF = process.env.REACT_APP_URI + "/images/"
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        console.log(postId)
-        const res = await axios.get(`${process.env.REACT_APP_URI}/post/${postId}`)
+        await refresh();
+        const res = await axios.get(`${process.env.REACT_APP_URI}/post/${postId}`, {
+          headers: {
+            authorization: `Bearer ${currentUser.accessToken}`
+          }
+        });
         console.log(res.data)
         setPost(res.data)
       } catch(err) {

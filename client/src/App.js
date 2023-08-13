@@ -15,8 +15,12 @@ import Home from "./pages/Home";
 import Post from "./pages/Post";
 import CreatePost from "./pages/CreatePost";
 import EditPost from "./pages/EditPost";
+import axios from "axios";
+import { useContext } from "react";
+import { AuthContext } from "./context/AuthContext";
 
 function App() {
+
   const Layout = () => {
     return (
       <div className="flex flex-col">

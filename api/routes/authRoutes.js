@@ -4,11 +4,14 @@ const {
   login,
   getUsers,
   logout,
+  refresh,
 } = require("../controller/authController");
 
 router.post("/register", register);
 
 router.post("/login", login);
+
+router.post("/refresh", refresh);
 
 router.get("/", getUsers);
 
